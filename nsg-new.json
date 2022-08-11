@@ -11,6 +11,9 @@
       "srcIPInboundNSG": {
         "type": "string"
       },
+      "tags": {
+        "type": "object"
+      },
       "virtualNetworkAddressPrefix": {
         "type": "string"
       }
@@ -25,6 +28,7 @@
         "type": "Microsoft.Network/networkSecurityGroups",
         "name": "[parameters('nsgName')]",
         "location": "[parameters('location')]",
+        "tags": "[parameters('tags')]",
         "properties": {
             "securityRules": [{
                 "name": "Allow-Outside-From-IP",

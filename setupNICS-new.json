@@ -28,6 +28,9 @@
     },
     "baseUrl": {
       "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -44,6 +47,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
+      "tags": "[parameters('tags')]",
       "properties": {
         "ipConfigurations": [
           {
@@ -90,6 +94,9 @@
           "virtualNetworkExistingRGName": {
             "value": "[parameters('virtualNetworkExistingRGName')]"
           },
+          "tags": {
+            "type": "object"
+          }
         }
       }
     },
@@ -101,6 +108,7 @@
       "dependsOn": [
         "[concat('SetupNetworkInterfaceUntrust-', parameters('nicName'))]"
       ],
+      "tags": "[parameters('tags')]",
       "properties": {
         "enableIPForwarding": true,
         "ipConfigurations": [

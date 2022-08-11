@@ -23,6 +23,9 @@
       },
       "defaultValue": "Standard_LRS"
     },
+    "tags": {
+      "type": "object"
+    }
   },
   "variables": {
     "stname": "[parameters('storageAccountName')]"
@@ -33,6 +36,7 @@
         "name": "[variables('stname')]",
 	"apiVersion": "2015-06-15",
 	"location": "[parameters('location')]",
+  "tags": "[parameters('tags')]",
 	"properties": {
 		"accountType": "[parameters('storageAccountType')]"
 	}

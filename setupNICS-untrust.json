@@ -16,6 +16,9 @@
     },
     "virtualNetworkExistingRGName": {
       "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -28,6 +31,7 @@
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[parameters('location')]",
       "apiVersion": "2015-06-15",
+      "tags": "[parameters('tags')]",
       "properties": {
       "enableIPForwarding": true,
         "ipConfigurations": [

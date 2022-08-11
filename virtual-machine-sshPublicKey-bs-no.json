@@ -44,6 +44,9 @@
     "sshKey": {
       "type": "string"
     },
+    "tags": {
+      "type": "object"
+    }
   },
   "variables": {
         "apiVersion": "2015-06-15",
@@ -60,6 +63,7 @@
            "product": "[parameters('imageOffer')]",
            "publisher": "[parameters('imagePublisher')]"
         },
+        "tags": "[parameters('tags')]",
         "properties": {
             "availabilitySet": {
               "id": "[resourceId('Microsoft.Compute/availabilitySets',parameters('availabilitySetName'))]"
