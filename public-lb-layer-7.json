@@ -7,15 +7,15 @@
       "defaultValue": "myPublicLB",
       "metadata": {
         "description": "Public Load Balancer name"
-      } 
+      }
     },
     "publicIPAddressName": {
       "type": "string",
       "defaultValue": "myPublicLBName",
       "metadata": {
         "description": "Public Load Balancer IP Name"
-      } 
-    },  
+      }
+    },
     "vnetName": {
       "type": "string",
       "defaultValue": "myVNET",
@@ -28,9 +28,21 @@
       "allowedValues": [
         "Standard_Small",
         "Standard_Medium",
-        "Standard_Large"
+        "Standard_Large",
+        "Standard_v2"
       ],
       "defaultValue": "Standard_Medium",
+      "metadata": {
+        "description": "Sku Name"
+      }
+    },
+    "tier": {
+      "type": "string",
+      "allowedValues": [
+        "Standard",
+        "Standard_v2"
+      ],
+      "defaultValue": "Standard",
       "metadata": {
         "description": "Sku Name"
       }
@@ -62,6 +74,9 @@
       "metadata": {
         "description": "App Gateway subnet Name"
       }
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -78,6 +93,7 @@
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[parameters('publicIPAddressName')]",
       "location": "[resourceGroup().location]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
       }
@@ -90,10 +106,11 @@
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', parameters('publicIPAddressName'))]"
       ],
+      "tags": "[parameters('tags')]",
       "properties": {
         "sku": {
           "name": "[parameters('skuName')]",
-          "tier": "Standard",
+          "tier": "[parameters('tier')]",
           "capacity": "[parameters('capacity')]"
         },
         "gatewayIPConfigurations": [
@@ -107,7 +124,7 @@
           }
         ],
         "frontendIPConfigurations": [
-        {
+          {
             "name": "appGatewayFrontendIP",
             "properties": {
               "PublicIPAddress": {
@@ -128,7 +145,7 @@
           {
             "name": "appGatewayBackendPool",
             "properties": {
-               "BackendAddresses": "[parameters('backendIPAddresses')]"
+              "BackendAddresses": "[parameters('backendIPAddresses')]"
             }
           }
         ],
