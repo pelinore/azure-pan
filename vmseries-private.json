@@ -277,7 +277,7 @@
             "value": "[resourceGroup().location]"
           },
           "tags": {
-            "value": "parameters('tags')"
+            "value": "[parameters('tags')]"
           }
         }
       }
