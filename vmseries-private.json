@@ -265,6 +265,9 @@
       "type": "Microsoft.Compute/availabilitySets",
       "name": "[variables('availabilitySetName')]",
       "location": "[variables('location')]",
+      "sku": {
+        "name": "Aligned"
+      },
       "tags": "[parameters('tags')]"
     },
     {
