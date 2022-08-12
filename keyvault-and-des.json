@@ -122,7 +122,7 @@
           "sourceVault": {
             "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
           },
-          "keyUrl": "[reference(resourceId('Microsoft.KeyVault/vaults/keys', parameters('keyVaultName'), parameters('keyVaultKeyName')), '2022-07-02', 'Full').properties.keyUriWithVersion]"
+          "keyUrl": "[reference(resourceId('Microsoft.KeyVault/vaults/keys', parameters('keyVaultName'), parameters('keyVaultKeyName')), '2022-07-01', 'Full').properties.keyUriWithVersion]"
         }
       },
       "tags": "[parameters('tags')]"
