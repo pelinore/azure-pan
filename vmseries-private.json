@@ -282,13 +282,13 @@
             "value": "[variables('location')]"
           },
           "keyVaultName": {
-            "value": "parameters('keyVaultName')"
+            "value": "[parameters('keyVaultName')]"
           },
           "keyVaultKeyName": {
-            "value": "parameters('keyVaultKeyName')"
+            "value": "[parameters('keyVaultKeyName')]"
           },
           "diskEncryptionSetName": {
-            "value": "parameters('diskEncryptionSetName')"
+            "value": "[parameters('diskEncryptionSetName')]"
           },
           "tags": {
             "value": "[parameters('tags')]"
