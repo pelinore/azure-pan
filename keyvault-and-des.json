@@ -93,7 +93,7 @@
     },
     {
       "type": "Microsoft.KeyVault/vaults/keys",
-      "apiVersion": "2021-10-01",
+      "apiVersion": "2022-07-01",
       "name": "[format('{0}/{1}', parameters('keyVaultName'), parameters('keyVaultKeyName'))]",
       "properties": {
         "attributes": {
@@ -107,7 +107,7 @@
       ]
     },
     {
-      "apiVersion": "2019-07-01",
+      "apiVersion": "2022-03-02",
       "type": "Microsoft.Compute/diskEncryptionSets",
       "name": "[parameters('diskEncryptionSetName')]",
       "location": "[parameters('location')]",
