@@ -68,7 +68,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2021-10-01",
+      "apiVersion": "2022-07-01",
       "name": "[parameters('keyVaultName')]",
       "location": "[parameters('location')]",
       "type": "Microsoft.KeyVault/vaults",
@@ -111,6 +111,9 @@
       "type": "Microsoft.Compute/diskEncryptionSets",
       "name": "[parameters('diskEncryptionSetName')]",
       "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ],
       "identity": {
         "type": "SystemAssigned"
       },
