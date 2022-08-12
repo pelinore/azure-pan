@@ -1,0 +1,159 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "keyVaultName": {
+      "type": "string"
+    },
+    "keyVaultKeyName": {
+      "type": "string"
+    },
+    "diskEncryptionSetName": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "Standard"
+    },
+    "accessPolicies": {
+      "type": "array",
+      "defaultValue": []
+    },
+    "enabledForDeployment": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "enabledForTemplateDeployment": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "enabledForDiskEncryption": {
+      "type": "bool",
+      "defaultValue": true
+    },
+    "enableRbacAuthorization": {
+      "type": "bool",
+      "defaultValue": false
+    },
+    "enableSoftDelete": {
+      "type": "bool",
+      "defaultValue": true
+    },
+    "softDeleteRetentionInDays": {
+      "type": "int",
+      "defaultValue": 90
+    },
+    "enablePurgeProtection": {
+      "type": "bool",
+      "defaultValue": true
+    },
+    "networkAcls": {
+      "type": "object",
+      "defaultValue": {
+        "defaultAction": "allow",
+        "bypass": "AzureServices",
+        "ipRules": [],
+        "virtualNetworkRules": []
+      }
+    },
+    "tags": {
+      "type": "object"
+    }
+  },
+  "variables": {
+    "tenant": "[subscription().tenantId]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2021-10-01",
+      "name": "[parameters('keyVaultName')]",
+      "location": "[parameters('location')]",
+      "type": "Microsoft.KeyVault/vaults",
+      "properties": {
+        "enabledForDeployment": "[parameters('enabledForDeployment')]",
+        "enabledForTemplateDeployment": "[parameters('enabledForTemplateDeployment')]",
+        "enabledForDiskEncryption": "[parameters('enabledForDiskEncryption')]",
+        "enableRbacAuthorization": "[parameters('enableRbacAuthorization')]",
+        "accessPolicies": "[parameters('accessPolicies')]",
+        "tenantId": "[variables('tenant')]",
+        "sku": {
+          "name": "[parameters('sku')]",
+          "family": "A"
+        },
+        "enableSoftDelete": "[parameters('enableSoftDelete')]",
+        "softDeleteRetentionInDays": "[parameters('softDeleteRetentionInDays')]",
+        "enablePurgeProtection": "[parameters('enablePurgeProtection')]",
+        "networkAcls": "[parameters('networkAcls')]"
+      },
+      "tags": "[parameters('tags')]",
+      "dependsOn": []
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/keys",
+      "apiVersion": "2021-10-01",
+      "name": "[format('{0}/{1}', parameters('keyVaultName'), parameters('keyVaultKeyName'))]",
+      "properties": {
+        "attributes": {
+          "enabled": true
+        },
+        "keySize": 4096,
+        "kty": "RSA"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+      ]
+    },
+    {
+      "apiVersion": "2019-07-01",
+      "type": "Microsoft.Compute/diskEncryptionSets",
+      "name": "[parameters('diskEncryptionSetName')]",
+      "location": "[parameters('location')]",
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "activeKey": {
+          "sourceVault": {
+            "id": "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]"
+          },
+          "keyUrl": "[reference(resourceId('Microsoft.KeyVault/vaults/keys', parameters('keyVaultName'), parameters('keyVaultKeyName')), '2021-10-01', 'Full').properties.keyUriWithVersion]"
+        }
+      },
+      "tags": "[parameters('tags')]"
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/accessPolicies",
+      "apiVersion": "2019-09-01",
+      "name": "[concat(variables('keyVaultName'), '/add')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/diskEncryptionSets', parameters('diskEncryptionSetName'))]"
+      ],
+      "properties": {
+        "accessPolicies": [
+          {
+            "tenantId": "[variables('tenant')]",
+            "objectId": "[reference(resourceId('Microsoft.Compute/diskEncryptionSets', parameters('diskEncryptionSetName')), '2021-10-01', 'Full').identity.PrincipalId]",
+            "permissions": {
+              "keys": [
+                "Get",
+                "WrapKey",
+                "UnwrapKey"
+              ],
+              "secrets": [],
+              "certificates": []
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "outputs": {
+    "diskEncryptionSetId": {
+      "value": "[resourceId('Microsoft.Compute/diskEncryptionSets', parameters('diskEncryptionSetName'))]",
+      "type": "string"
+    }
+  }
+}
