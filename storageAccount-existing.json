@@ -22,6 +22,9 @@
         "Description": "The type of the Storage Account created"
       },
       "defaultValue": "Standard_LRS"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "resources": [],
