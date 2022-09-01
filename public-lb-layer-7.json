@@ -139,6 +139,12 @@
             "properties": {
               "Port": 80
             }
+          },
+          {
+            "name": "appGatewayFrontendPortSecure",
+            "properties": {
+              "Port": 443
+            }
           }
         ],
         "backendAddressPools": [
