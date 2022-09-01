@@ -89,6 +89,9 @@
       "metadata": {
         "description": "backend WWW CIDR"
       }
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
