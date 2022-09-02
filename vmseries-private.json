@@ -309,7 +309,7 @@
             "value": "[variables('location')]"
           },
           "nicName": {
-            "value": "[concat(variables('nicName'), copyindex())]"
+            "value": "[concat(variables('nicName'), copyindex(1))]"
           },
           "subnet0Name": {
             "value": "[parameters('subnet0Name')]"
