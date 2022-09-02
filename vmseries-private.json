@@ -400,7 +400,7 @@
             "value": "[reference('DiskEncryptionSetCreate').outputs.diskEncryptionSetId.value]"
           },
           "zone": {
-            "value": "[if(greater(copyindex(1),2),sub(copyindex(1),2),copyindex(1))]"
+            "value": "[string(if(greater(copyindex(1),2),sub(copyindex(1),2),copyindex(1)))]"
           }
         }
       }
