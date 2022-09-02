@@ -370,7 +370,7 @@
             "value": "[variables('imagePublisher')]"
           },
           "nicName": {
-            "value": "[concat(variables('nicName'), copyindex())]"
+            "value": "[concat(variables('nicName'), copyindex(1))]"
           },
           "vmSize": {
             "value": "[parameters('vmSize')]"
